@@ -391,7 +391,7 @@ if __name__ == '__main__':
         os.makedirs(results_path)
     
     
-    a = 0.001 # utility function parameter
+    a = 0.005 # utility function parameter
     gamma = 0.99 # (1-gamma) being fee
     kappa = 0.001 # slippage
     sigma = 0.3 # diffusion of GBM                                                                                                            
