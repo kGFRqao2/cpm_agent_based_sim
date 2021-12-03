@@ -131,13 +131,13 @@ class ActorCritic():
         self.C = FFN(sizes = [self.d] + kwargs['hidden_dims'] + [3], output_activation=nn.Softmax).to(device) # if C=0 sell alpha. if C=1 sell beta
         self.alpha.apply(init_weights)
         self.optimizer_alpha = torch.optim.Adam(list(self.alpha.parameters()) + list(self.C.parameters()), lr=0.005)
-        self.scheduler_alpha = torch.optim.lr_scheduler.MultiStepLR(self.optimizer_alpha, milestones=[1000], gamma=0.1)
+        self.scheduler_alpha = torch.optim.lr_scheduler.MultiStepLR(self.optimizer_alpha, milestones=[3000,4000], gamma=0.1)
         
         # value function
         self.v = FFN(sizes = [self.d] + kwargs['hidden_dims'] + [1]).to(device) # input of v is x
         self.v.apply(init_weights)
         self.optimizer_v = torch.optim.Adam(self.v.parameters(), lr=0.005)
-        self.scheduler_v = torch.optim.lr_scheduler.MultiStepLR(self.optimizer_v, milestones=[1000], gamma=0.1)
+        self.scheduler_v = torch.optim.lr_scheduler.MultiStepLR(self.optimizer_v, milestones=[3000,4000], gamma=0.1)
         
         # discount factor for Bellman equation
         self.discount_factor = discount_factor
@@ -486,4 +486,4 @@ if __name__ == '__main__':
         torch.save(state, os.path.join(results_path, "state.pth.tar"))
         # plots
         filename = os.path.join(results_path, 'trajectories.pdf')
-        make_plots(agent, filename, **s_args)
+        make_plots(agent, results_path, n_mc=10, render=True, **s_args)
